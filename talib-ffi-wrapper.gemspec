@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'ffi/talib/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "talib-ffi"
+  spec.name          = "ffi-talib"
   spec.version       = FFI::Talib::VERSION
   spec.authors       = ["Marco Carvalho"]
   spec.email         = ["marco.carvalho.swasthya@gmail.com"]
