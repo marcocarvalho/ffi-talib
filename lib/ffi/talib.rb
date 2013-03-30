@@ -1,4 +1,5 @@
 require 'ffi'
+require 'ffi/talib'
 
 module FFI::Talib
   module LibC
@@ -23,8 +24,8 @@ module FFI::Talib
 
   attach_function :TA_SMA, [ :int, :int, :pointer, :int, :pointer, :pointer, :pointer], :uint
 
-  def implemented_talib_methods
-    methods.map { |n| v = n.to_s[0..2]; v = 'ta_' ? v[2, v.size].to_sym : nil }.compact
+  def self.implemented_talib_methods
+    @implemented_talib_methods ||= methods.map { |n| v = n.to_s.downcase; v[0..2] == 'ta_' ? v[3, v.size].to_sym : nil }.compact
   end
 
   def ta_sma(prices, period, opts = {})
