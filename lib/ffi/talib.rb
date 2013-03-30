@@ -23,6 +23,10 @@ module FFI::Talib
 
   attach_function :TA_SMA, [ :int, :int, :pointer, :int, :pointer, :pointer, :pointer], :uint
 
+  def implemented_talib_methods
+    methods.map { |n| v = n.to_s[0..2]; v = 'ta_' ? v[2, v.size].to_sym : nil }.compact
+  end
+
   def ta_sma(prices, period, opts = {})
     inReal       = LibC.malloc(8 * prices.size)
     outReal      = LibC.malloc(8 * prices.size)
