@@ -25,6 +25,9 @@ module FFI::Talib
   attach_function :TA_SMA, [ :int, :int, :pointer, :int, :pointer, :pointer, :pointer], :uint
   attach_function :TA_SMA_Lookback, [:int], :int
 
+  attach_function :TA_TRIMA, [:int, :int, :pointer, :int, :pointer, :pointer, :pointer], :uint
+  attach_function :TA_TRIMA_Lookback, [:int], :int
+
   module Methods
     def implemented_talib_methods
       @implemented_talib_methods ||= methods.map { |n| v = n.to_s; v[0..2] == 'ta_' ? v[3, v.size].to_sym : nil }.compact
