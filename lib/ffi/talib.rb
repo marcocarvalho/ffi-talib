@@ -23,29 +23,20 @@ module FFI::Talib
   ffi_lib '/usr/local/lib/libta_lib.so'
 
   attach_function :TA_SMA, [ :int, :int, :pointer, :int, :pointer, :pointer, :pointer], :uint
+  attach_function :TA_SMA_Lookback, [:int], :int
 
-  def self.implemented_talib_methods
-    @implemented_talib_methods ||= methods.map { |n| v = n.to_s.downcase; v[0..2] == 'ta_' ? v[3, v.size].to_sym : nil }.compact
-  end
-
-  def ta_sma(prices, period, opts = {})
-    inReal       = LibC.malloc(8 * prices.size)
-    outReal      = LibC.malloc(8 * prices.size)
-    outBegIdx    = FFI::MemoryPointer.new(1.size)
-    outNBElement = FFI::MemoryPointer.new(1.size)
-    
-    inReal.write_array_of_double(prices)
-
-    ret = TA_SMA(0,prices.size - 1, inReal, period, outBegIdx, outNBElement, outReal)
-    if ret == 0
-      ret = outReal.read_array_of_double(outNBElement.read_int)
-    else
-      ret = false
+  module Methods
+    def implemented_talib_methods
+      @implemented_talib_methods ||= methods.map { |n| v = n.to_s; v[0..2] == 'ta_' ? v[3, v.size].to_sym : nil }.compact
     end
-    LibC.free(inReal)
-    LibC.free(outReal)
-    outBegIdx.free
-    outNBElement.free
-    ret
+
+    require 'ffi/talib/methods'
   end
+
+  def self.included(klass)
+    klass.extend(Methods)
+    klass.send(:include, Methods)
+  end
+
+  extend Methods
 end
