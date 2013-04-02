@@ -40,6 +40,9 @@ module FFI::Talib
   attach_function :TA_STDDEV, [startIdx, endIdx, inReal, optInTimePeriod, optInNbDev, outBegIdx, outNBElement, outReal], :uint
   attach_function :TA_STDDEV_Lookback, [optInTimePeriod, optInNbDev], :int
 
+  attach_function :TA_VAR, [startIdx, endIdx, inReal, optInTimePeriod, optInNbDev, outBegIdx, outNBElement, outReal], :uint
+  attach_function :TA_VAR_Lookback, [optInTimePeriod, optInNbDev], :int
+
   module Methods
     def implemented_talib_methods
       @implemented_talib_methods ||= methods.map { |n| v = n.to_s; v[0..2] == 'ta_' ? v[3, v.size].to_sym : nil }.compact
