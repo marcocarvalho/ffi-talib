@@ -12,22 +12,24 @@ module FFI::Talib
     attach_function :valloc, [:size_t], :pointer
     attach_function :realloc, [:pointer, :size_t], :pointer
     attach_function :free, [:pointer], :void
-    
+
     # memory movers
     attach_function :memcpy, [:pointer, :pointer, :size_t], :pointer
     attach_function :bcopy, [:pointer, :pointer, :size_t], :void
-    
+
   end # module LibC
 
   extend FFI::Library
   ffi_lib '/usr/local/lib/libta_lib.so'
 
-  startIdx     = :int
-  endIdx       = :int
-  inReal       = :pointer
-  outBegIdx    = :pointer
-  outNBElement = :pointer
-  outReal      = :pointer
+  startIdx        = :int
+  endIdx          = :int
+  inReal          = :pointer
+  optInTimePeriod = :int
+  optInNbDev      = :double
+  outBegIdx       = :pointer # to int
+  outNBElement    = :pointer # to int
+  outReal         = :pointer # array of double
   TA_RetCode   = :uint
 
   attach_function :TA_SMA, [ :int, :int, :pointer, :int, :pointer, :pointer, :pointer], :uint
@@ -38,6 +40,12 @@ module FFI::Talib
 
   attach_function :TA_TRIMA, [:int, :int, :pointer, :int, :pointer, :pointer, :pointer], :uint
   attach_function :TA_TRIMA_Lookback, [:int], :int
+
+  attach_function :TA_STDDEV, [startIdx, endIdx, inReal, optInTimePeriod, optInNbDev, outBegIdx, outNBElement, outReal], :uint
+  attach_function :TA_STDDEV_Lookback, [optInTimePeriod, optInNbDev], :int
+
+  attach_function :TA_VAR, [startIdx, endIdx, inReal, optInTimePeriod, optInNbDev, outBegIdx, outNBElement, outReal], :uint
+  attach_function :TA_VAR_Lookback, [optInTimePeriod, optInNbDev], :int
 
   module Methods
     def implemented_talib_methods
