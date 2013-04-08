@@ -30,7 +30,13 @@ module FFI::Talib
   outBegIdx       = :pointer # to int
   outNBElement    = :pointer # to int
   outReal         = :pointer # array of double
-  TA_RetCode   = :uint
+  TA_RetCode      = :uint
+  optInFastPeriod   = :int
+  optInSlowPeriod   = :int
+  optInSignalPeriod = :int
+  outMACD           = :pointer
+  outMACDSignal     = :pointer
+  outMACDHist       = :pointer
 
   attach_function :TA_SMA, [ :int, :int, :pointer, :int, :pointer, :pointer, :pointer], :uint
   attach_function :TA_SMA_Lookback, [:int], :int
@@ -46,6 +52,9 @@ module FFI::Talib
 
   attach_function :TA_VAR, [startIdx, endIdx, inReal, optInTimePeriod, optInNbDev, outBegIdx, outNBElement, outReal], :uint
   attach_function :TA_VAR_Lookback, [optInTimePeriod, optInNbDev], :int
+
+  attach_function :TA_MACD, [startIdx, endIdx, inReal, optInFastPeriod, optInSlowPeriod, optInSignalPeriod, outBegIdx, outNBElement, outMACD, outMACDSignal, outMACDHist], TA_RetCode
+  attach_function :TA_MACD_Lookback, [optInFastPeriod, optInSlowPeriod, optInSignalPeriod], :int
 
   module Methods
     def implemented_talib_methods
