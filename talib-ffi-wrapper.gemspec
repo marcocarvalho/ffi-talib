@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = FFI::Talib::VERSION
   spec.authors       = ["Marco Carvalho"]
   spec.email         = ["marco.carvalho.swasthya@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{talib wrapper}
+  spec.summary       = %q{talib wrapper}
   spec.homepage      = ""
   spec.license       = "BSD"
 
