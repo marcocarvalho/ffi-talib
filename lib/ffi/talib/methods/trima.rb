@@ -1,14 +1,14 @@
-module FFI::Talib::Methods 
+module FFI::Talib::Methods
   def ta_trima(prices, period, opts = {})
     raise ArgumentError.new('prices must be an array') unless prices.is_a?(Array)
     raise ArgumentError.new('period must be a Fixnum and greater than 1') if !period.is_a?(Fixnum) or period < 2
     return [] if prices.empty?
-    # 8 is size of double in GCC linux, other SO got other sizes. For now it will be like this
-    inReal       = FFI::Talib::LibC.malloc(8 * prices.size)
-    outReal      = FFI::Talib::LibC.malloc(8 * FFI::Talib::TA_TRIMA_Lookback(prices.size))
+
+    inReal       = FFI::Talib::LibC.malloc(DoubleSize * prices.size)
+    outReal      = FFI::Talib::LibC.malloc(DoubleSize * FFI::Talib::TA_TRIMA_Lookback(prices.size))
     outBegIdx    = FFI::MemoryPointer.new(1.size)
     outNBElement = FFI::MemoryPointer.new(1.size)
-    
+
     inReal.write_array_of_double(prices)
 
     ret = FFI::Talib::TA_TRIMA(0,prices.size - 1, inReal, period, outBegIdx, outNBElement, outReal)

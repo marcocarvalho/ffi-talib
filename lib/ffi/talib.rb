@@ -37,6 +37,23 @@ module FFI::Talib
   outMACD           = :pointer
   outMACDSignal     = :pointer
   outMACDHist       = :pointer
+  optInAcceleration = :double
+  optInMaximum      = :double
+  inHigh            = :pointer
+  inLow             = :pointer
+
+# TA_RetCode TA_SAR( int    startIdx,
+#                    int    endIdx,
+#                    const double inHigh[],
+#                    const double inLow[],
+#                    double        optInAcceleration, /* From 0 to TA_REAL_MAX */
+#                    double        optInMaximum, /* From 0 to TA_REAL_MAX */
+#                    int          *outBegIdx,
+#                    int          *outNBElement,
+#                    double        outReal[] );
+
+  attach_function :TA_SAR, [startIdx, endIdx, inHigh, inLow, optInAcceleration, optInMaximum, outBegIdx, outNBElement, outReal], :uint
+  attach_function :TA_SAR_Lookback, [optInAcceleration, optInMaximum], :int
 
   attach_function :TA_SMA, [ :int, :int, :pointer, :int, :pointer, :pointer, :pointer], :uint
   attach_function :TA_SMA_Lookback, [:int], :int
@@ -57,6 +74,9 @@ module FFI::Talib
   attach_function :TA_MACD_Lookback, [optInFastPeriod, optInSlowPeriod, optInSignalPeriod], :int
 
   module Methods
+
+    DoubleSize = 8
+
     def implemented_talib_methods
       @implemented_talib_methods ||= methods.map { |n| v = n.to_s; v[0..2] == 'ta_' ? v[3, v.size].to_sym : nil }.compact
     end

@@ -7,7 +7,7 @@ module FFI::Talib::Methods
     outReal      = FFI::Talib::LibC.malloc(8 * prices.size) #FFI::Talib::TA_FLOOR_Lookback())
     outBegIdx    = FFI::MemoryPointer.new(1.size)
     outNBElement = FFI::MemoryPointer.new(1.size)
-    
+
     inReal.write_array_of_double(prices)
 
     ret = FFI::Talib::TA_FLOOR(0,prices.size - 1, inReal, outBegIdx, outNBElement, outReal)

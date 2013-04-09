@@ -16,9 +16,8 @@ module FFI::Talib::Methods
     optInTimePeriod = opts[:optInTimePeriod] || prices.size
     optInNbDev = opts[:optInNbDev] || 1
 
-    # 8 is size of double in GCC linux, other SO got other sizes. For now it will be like this
-    inReal       = FFI::Talib::LibC.malloc(8 * prices.size)
-    outReal      = FFI::Talib::LibC.malloc(8 * FFI::Talib::TA_VAR_Lookback(optInTimePeriod, optInNbDev))
+    inReal       = FFI::Talib::LibC.malloc(DoubleSize * prices.size)
+    outReal      = FFI::Talib::LibC.malloc(DoubleSize * FFI::Talib::TA_VAR_Lookback(optInTimePeriod, optInNbDev))
     outBegIdx    = FFI::MemoryPointer.new(1.size)
     outNBElement = FFI::MemoryPointer.new(1.size)
 

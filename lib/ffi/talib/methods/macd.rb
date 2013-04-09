@@ -19,12 +19,12 @@ module FFI::Talib::Methods
       optInSlowPeriod: 26,
       optInSignalPeriod: 9
     }.merge(opts)
-    # 8 is size of double in GCC linux, other SO got other sizes. For now it will be like this
-    inReal        = FFI::Talib::LibC.malloc(8 * prices.size)
+
+    inReal        = FFI::Talib::LibC.malloc(DoubleSize * prices.size)
     lookback      = FFI::Talib::TA_MACD_Lookback(options[:optInFastPeriod], options[:optInSlowPeriod], options[:optInSignalPeriod])
-    outMACD       = FFI::Talib::LibC.malloc(8 * prices.size)#8 * lookback)
-    outMACDSignal = FFI::Talib::LibC.malloc(8 * prices.size)#8 * lookback)
-    outMACDHist   = FFI::Talib::LibC.malloc(8 * prices.size)#8 * lookback)
+    outMACD       = FFI::Talib::LibC.malloc(DoubleSize * prices.size)
+    outMACDSignal = FFI::Talib::LibC.malloc(DoubleSize * prices.size)
+    outMACDHist   = FFI::Talib::LibC.malloc(DoubleSize * prices.size)
     outBegIdx     = FFI::MemoryPointer.new(1.size)
     outNBElement  = FFI::MemoryPointer.new(1.size)
 
