@@ -10,7 +10,7 @@
 
 module FFI::Talib::Methods
   def ta_sar(high, low, opts = {})
-    raise ArgumentError.new('prices must be an array') unless high.is_a?(Array) and low.is_a?(Array)
+    raise ArgumentError.new('high and low prices must be an array') unless high.is_a?(Array) and low.is_a?(Array)
     return [] if high.empty? or low.empty?
     options = {
       optInAcceleration: 0.02,
