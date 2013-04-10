@@ -41,16 +41,20 @@ module FFI::Talib
   optInMaximum      = :double
   inHigh            = :pointer
   inLow             = :pointer
+  inClose           = :pointer
 
-# TA_RetCode TA_SAR( int    startIdx,
+# TA_RetCode TA_ATR( int    startIdx,
 #                    int    endIdx,
 #                    const double inHigh[],
 #                    const double inLow[],
-#                    double        optInAcceleration, /* From 0 to TA_REAL_MAX */
-#                    double        optInMaximum, /* From 0 to TA_REAL_MAX */
+#                    const double inClose[],
+#                    int           optInTimePeriod, /* From 1 to 100000 */
 #                    int          *outBegIdx,
 #                    int          *outNBElement,
 #                    double        outReal[] );
+
+  attach_function :TA_ATR, [startIdx, endIdx, inHigh, inLow, inClose, optInTimePeriod, outBegIdx, outNBElement, outReal], :uint
+  attach_function :TA_ATR_Lookback, [:optInTimePeriod], :int
 
   attach_function :TA_SAR, [startIdx, endIdx, inHigh, inLow, optInAcceleration, optInMaximum, outBegIdx, outNBElement, outReal], :uint
   attach_function :TA_SAR_Lookback, [optInAcceleration, optInMaximum], :int
