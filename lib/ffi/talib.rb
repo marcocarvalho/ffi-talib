@@ -54,7 +54,7 @@ module FFI::Talib
 #                    double        outReal[] );
 
   attach_function :TA_ATR, [startIdx, endIdx, inHigh, inLow, inClose, optInTimePeriod, outBegIdx, outNBElement, outReal], :uint
-  attach_function :TA_ATR_Lookback, [:optInTimePeriod], :int
+  attach_function :TA_ATR_Lookback, [optInTimePeriod], :int
 
   attach_function :TA_SAR, [startIdx, endIdx, inHigh, inLow, optInAcceleration, optInMaximum, outBegIdx, outNBElement, outReal], :uint
   attach_function :TA_SAR_Lookback, [optInAcceleration, optInMaximum], :int
