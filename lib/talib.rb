@@ -1,7 +1,6 @@
 require 'ffi'
-require 'ffi/talib'
 
-module FFI::Talib
+module Talib
   module LibC
     extend FFI::Library
     ffi_lib FFI::Library::LIBC
@@ -85,7 +84,7 @@ module FFI::Talib
       @implemented_talib_methods ||= methods.map { |n| v = n.to_s; v[0..2] == 'ta_' ? v[3, v.size].to_sym : nil }.compact
     end
 
-    require 'ffi/talib/methods'
+    require 'talib/methods'
   end
 
   def self.included(klass)

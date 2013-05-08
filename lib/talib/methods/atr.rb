@@ -8,15 +8,15 @@
 #                    int          *outNBElement,
 #                    double        outReal[] );
 
-module FFI::Talib::Methods
+module Talib::Methods
   def ta_atr(high, low, close, opts = {})
     raise ArgumentError.new('prices must be an array') unless high.is_a?(Array) and low.is_a?(Array) and close.is_a?(Array)
     return [] if high.empty? or low.empty? or close.empty?
 
-    inHigh       = FFI::Talib::LibC.malloc(DoubleSize * high.size)
-    inLow        = FFI::Talib::LibC.malloc(DoubleSize * low.size)
-    inClose      = FFI::Talib::LibC.malloc(DoubleSize * close.size)
-    outReal      = FFI::Talib::LibC.malloc(DoubleSize * FFI::Talib::TA_ATR_Lookback(close.size))
+    inHigh       = Talib::LibC.malloc(DoubleSize * high.size)
+    inLow        = Talib::LibC.malloc(DoubleSize * low.size)
+    inClose      = Talib::LibC.malloc(DoubleSize * close.size)
+    outReal      = Talib::LibC.malloc(DoubleSize * Talib::TA_ATR_Lookback(close.size))
     outBegIdx    = FFI::MemoryPointer.new(1.size)
     outNBElement = FFI::MemoryPointer.new(1.size)
 
@@ -24,16 +24,16 @@ module FFI::Talib::Methods
     inLow.write_array_of_double(low)
     inClose.write_array_of_double(close)
 
-    ret = FFI::Talib::TA_ATR(0,close.size - 1, inHigh, inLow, inClose, close.size, outBegIdx, outNBElement, outReal)
+    ret = Talib::TA_ATR(0,close.size - 1, inHigh, inLow, inClose, close.size, outBegIdx, outNBElement, outReal)
     if ret == 0
       ret = outReal.read_array_of_double(outNBElement.read_int)
     else
       ret = false
     end
-    FFI::Talib::LibC.free(inHigh)
-    FFI::Talib::LibC.free(inLow)
-    FFI::Talib::LibC.free(inClose)
-    FFI::Talib::LibC.free(outReal)
+    Talib::LibC.free(inHigh)
+    Talib::LibC.free(inLow)
+    Talib::LibC.free(inClose)
+    Talib::LibC.free(outReal)
     outBegIdx.free
     outNBElement.free
     ret

@@ -1,4 +1,4 @@
-# FFI::Talib
+# Talib
 
 TALib wrapper with FFI... Under construction, first comits
 

@@ -8,7 +8,7 @@
 #                    int          *outNBElement,
 #                    double        outReal[] );
 
-module FFI::Talib::Methods
+module Talib::Methods
   def ta_sar(high, low, opts = {})
     raise ArgumentError.new('high and low prices must be an array') unless high.is_a?(Array) and low.is_a?(Array)
     return [] if high.empty? or low.empty?
@@ -17,16 +17,16 @@ module FFI::Talib::Methods
       optInMaximum: 0.2
     }.merge(opts)
 
-    inHigh        = FFI::Talib::LibC.malloc(DoubleSize * high.size)
-    inLow         = FFI::Talib::LibC.malloc(DoubleSize * low.size)
-    outReal       = FFI::Talib::LibC.malloc(DoubleSize * high.size)
+    inHigh        = Talib::LibC.malloc(DoubleSize * high.size)
+    inLow         = Talib::LibC.malloc(DoubleSize * low.size)
+    outReal       = Talib::LibC.malloc(DoubleSize * high.size)
     outBegIdx     = FFI::MemoryPointer.new(1.size)
     outNBElement  = FFI::MemoryPointer.new(1.size)
 
     inHigh.write_array_of_double(high)
     inLow.write_array_of_double(low)
 
-    ret = FFI::Talib::TA_SAR(0, high.size - 1, inHigh, inLow, options[:optInAcceleration], options[:optInMaximum], outBegIdx, outNBElement, outReal)
+    ret = Talib::TA_SAR(0, high.size - 1, inHigh, inLow, options[:optInAcceleration], options[:optInMaximum], outBegIdx, outNBElement, outReal)
     if ret == 0
       ret = {}
       el = outNBElement.read_int
@@ -34,9 +34,9 @@ module FFI::Talib::Methods
     else
       ret = false
     end
-    FFI::Talib::LibC.free(inHigh)
-    FFI::Talib::LibC.free(inLow)
-    FFI::Talib::LibC.free(outReal)
+    Talib::LibC.free(inHigh)
+    Talib::LibC.free(inLow)
+    Talib::LibC.free(outReal)
     outBegIdx.free
     outNBElement.free
     ret

@@ -1,2 +1,1 @@
-
-require 'ffi/talib'
+require 'talib'

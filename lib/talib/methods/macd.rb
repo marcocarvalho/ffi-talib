@@ -10,7 +10,7 @@
 #                     double        outMACDSignal[],
 #                     double        outMACDHist[] );
 
-module FFI::Talib::Methods
+module Talib::Methods
   def ta_macd(prices, opts = {})
     raise ArgumentError.new('prices must be an array') unless prices.is_a?(Array)
     return [] if prices.empty?
@@ -20,17 +20,17 @@ module FFI::Talib::Methods
       optInSignalPeriod: 9
     }.merge(opts)
 
-    inReal        = FFI::Talib::LibC.malloc(DoubleSize * prices.size)
-    lookback      = FFI::Talib::TA_MACD_Lookback(options[:optInFastPeriod], options[:optInSlowPeriod], options[:optInSignalPeriod])
-    outMACD       = FFI::Talib::LibC.malloc(DoubleSize * prices.size)
-    outMACDSignal = FFI::Talib::LibC.malloc(DoubleSize * prices.size)
-    outMACDHist   = FFI::Talib::LibC.malloc(DoubleSize * prices.size)
+    inReal        = Talib::LibC.malloc(DoubleSize * prices.size)
+    lookback      = Talib::TA_MACD_Lookback(options[:optInFastPeriod], options[:optInSlowPeriod], options[:optInSignalPeriod])
+    outMACD       = Talib::LibC.malloc(DoubleSize * prices.size)
+    outMACDSignal = Talib::LibC.malloc(DoubleSize * prices.size)
+    outMACDHist   = Talib::LibC.malloc(DoubleSize * prices.size)
     outBegIdx     = FFI::MemoryPointer.new(1.size)
     outNBElement  = FFI::MemoryPointer.new(1.size)
 
     inReal.write_array_of_double(prices)
 
-    ret = FFI::Talib::TA_MACD(0,prices.size - 1, inReal, options[:optInFastPeriod], options[:optInSlowPeriod], options[:optInSignalPeriod], outBegIdx, outNBElement, outMACD, outMACDSignal, outMACDHist)
+    ret = Talib::TA_MACD(0,prices.size - 1, inReal, options[:optInFastPeriod], options[:optInSlowPeriod], options[:optInSignalPeriod], outBegIdx, outNBElement, outMACD, outMACDSignal, outMACDHist)
     if ret == 0
       ret = {}
       el = outNBElement.read_int
@@ -40,10 +40,10 @@ module FFI::Talib::Methods
     else
       ret = false
     end
-    FFI::Talib::LibC.free(inReal)
-    FFI::Talib::LibC.free(outMACD)
-    FFI::Talib::LibC.free(outMACDHist)
-    FFI::Talib::LibC.free(outMACDSignal)
+    Talib::LibC.free(inReal)
+    Talib::LibC.free(outMACD)
+    Talib::LibC.free(outMACDHist)
+    Talib::LibC.free(outMACDSignal)
     outBegIdx.free
     outNBElement.free
     ret

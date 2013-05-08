@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe FFI::Talib do
-  subject { FFI::Talib }
+describe Talib do
+  subject { Talib }
   it 'should call simple moving average' do
     subject.ta_stddev([0,0,14,14]).should == [7.0]
   end
