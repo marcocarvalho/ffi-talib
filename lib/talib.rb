@@ -19,7 +19,7 @@ module Talib
   end # module LibC
 
   extend FFI::Library
-  ffi_lib '/usr/local/lib/libta_lib.so'
+  ffi_lib 'ta_lib'
 
   startIdx        = :int
   endIdx          = :int
