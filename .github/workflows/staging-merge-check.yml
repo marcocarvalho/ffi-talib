@@ -14,19 +14,17 @@ jobs:
     - name: Check staging merge
       run: |
         cd ${GITHUB_WORKSPACE}
-        merge_destination_branch=staging
-        merge_source_branch=$(git rev-parse --abbrev-ref $GITHUB_SHA)
-        export
-        echo $(pwd)
-        ls -la
+        MERGE_DESTINATION_BRANCH=staging
+        MERGE_SOURCE_BRANCH=$(git rev-parse --abbrev-ref $GITHUB_SHA)
         echo ... git rev-parse --abbrev-ref $GITHUB_SHA ...
-        echo ... git merge-base $merge_destination_branch $merge_source_branch ...
-        merge_base=$(git merge-base $merge_destination_branch $merge_source_branch)
-        if [[ $merge_base = $GITHUB_SHA ]]; then
-          DESCRIPTION=$merge_source_branch is merged into $merge_destination_branch;
+        echo ... $(git rev-parse --abbrev-ref $GITHUB_SHA) ...
+        echo ... git merge-base $MERGE_DESTINATION_BRANCH $MERGE_SOURCE_BRANCH ...
+        MERGE_BASE=$(git merge-base $MERGE_DESTINATION_BRANCH $MERGE_SOURCE_BRANCH)
+        if [[ $MERGE_BASE = $GITHUB_SHA ]]; then
+          DESCRIPTION=$MERGE_SOURCE_BRANCH is merged into $MERGE_DESTINATION_BRANCH;
           STATE=success;
         else
-          DESCRIPTION=$merge_source_branch is not merged into $merge_destination_branch;
+          DESCRIPTION=$MERGE_SOURCE_BRANCH is not merged into $MERGE_DESTINATION_BRANCH;
           STATE=pending;
         fi
         curl --request POST \
