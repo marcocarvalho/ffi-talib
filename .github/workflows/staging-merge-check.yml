@@ -18,13 +18,16 @@ jobs:
         echo ... git merge-base remotes/origin/staging $GITHUB_REF ...
         MERGE_BASE=$(git merge-base remotes/origin/staging remotes/origin/${GITHUB_REF##*/})
         if [[ $MERGE_BASE = $GITHUB_SHA ]]; then
-          DESCRIPTION=$GITHUB_REF is merged into staging;
-          STATE=success;
+          export DESCRIPTION=$GITHUB_REF is merged into staging;
+          export STATE=success;
+          echo "{\"state\":\"$STATE\",\"description\":\"$DESCRIPTION\",\"context\":\"checks.staging_merge\"}"
+          return 0
         else
-          DESCRIPTION=$GITHUB_REF is not merged into staging;
-          STATE=pending;
+          export DESCRIPTION=$GITHUB_REF is not merged into staging;
+          export STATE=pending;
+          echo "{\"state\":\"$STATE\",\"description\":\"$DESCRIPTION\",\"context\":\"checks.staging_merge\"}"
+          return 128
         fi
-        echo "{\"state\":\"$STATE\",\"description\":\"$DESCRIPTION\",\"context\":\"checks.staging_merge\"}"
         #curl --request POST \
         #  --url https://api.github.com/repos/${{ github.repository }}/statuses/$GITHUB_SHA \
         #  --header "authorization: Bearer $GITHUB_TOKEN" \
