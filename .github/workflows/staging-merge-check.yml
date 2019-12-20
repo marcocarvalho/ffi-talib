@@ -14,15 +14,14 @@ jobs:
     - name: Check staging merge
       run: |
         cd ${GITHUB_WORKSPACE}
-        export
         MERGE_DESTINATION_BRANCH=staging
-        echo ... git merge-base $MERGE_DESTINATION_BRANCH $GITHUB_REF ...
-        MERGE_BASE=$(git merge-base $MERGE_DESTINATION_BRANCH $GITHUB_REF)
+        echo ... git merge-base staging $GITHUB_REF ...
+        MERGE_BASE=$(git merge-base staging $GITHUB_REF)
         if [[ $MERGE_BASE = $GITHUB_SHA ]]; then
-          DESCRIPTION=$GITHUB_REF is merged into $MERGE_DESTINATION_BRANCH;
+          DESCRIPTION=$GITHUB_REF is merged into staging;
           STATE=success;
         else
-          DESCRIPTION=$GITHUB_REF is not merged into $MERGE_DESTINATION_BRANCH;
+          DESCRIPTION=$GITHUB_REF is not merged into staging;
           STATE=pending;
         fi
         echo "{\"state\":\"$STATE\",\"description\":\"$DESCRIPTION\",\"context\":\"checks.staging_merge\"}"
