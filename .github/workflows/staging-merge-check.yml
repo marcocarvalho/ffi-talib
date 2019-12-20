@@ -11,16 +11,4 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Check staging merge
-      run: |
-        cd ${GITHUB_WORKSPACE}
-        MERGE_BASE=$(git merge-base remotes/origin/staging remotes/origin/${GITHUB_REF##*/})
-        if [[ $MERGE_BASE = $GITHUB_SHA ]]; then
-          export DESCRIPTION="$GITHUB_REF is merged into staging";
-          export STATE=0;
-        else
-          export DESCRIPTION="$GITHUB_REF is not merged into staging";
-          export STATE=100;
-        fi
-        echo $DESCRIPTION
-        exit $STATE
+    - uses: actions/check_if_merged@v1
