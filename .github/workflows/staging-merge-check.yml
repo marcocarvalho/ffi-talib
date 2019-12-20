@@ -14,6 +14,7 @@ jobs:
     - name: Check staging merge
       run: |
         cd ${GITHUB_WORKSPACE}
+        git checkout staging
         MERGE_DESTINATION_BRANCH=staging
         MERGE_SOURCE_BRANCH=$(git rev-parse --abbrev-ref $GITHUB_SHA)
         echo ... git rev-parse --abbrev-ref $GITHUB_SHA ...
