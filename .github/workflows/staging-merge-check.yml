@@ -1,9 +1,9 @@
-name: Staging Merge
+name: Check if branch is merged to staging
 on:
   push:
     branches-ignore:
       - 'master'
-
+      - 'staging'
 jobs:
   build:
 
@@ -14,18 +14,13 @@ jobs:
     - name: Check staging merge
       run: |
         cd ${GITHUB_WORKSPACE}
-        merge_destination_branch=staging
-        merge_source_branch=$(git rev-parse --abbrev-ref $GITHUB_SHA)
-        merge_base=$(git merge-base $merge_destination_branch $merge_source_branch)
-        if [[ $merge_base = $GITHUB_SHA ]]; then
-          DESCRIPTION=$merge_source_branch is merged into $merge_destination_branch;
-          STATE=success;
+        MERGE_BASE=$(git merge-base remotes/origin/staging remotes/origin/${GITHUB_REF##*/})
+        if [[ $MERGE_BASE = $GITHUB_SHA ]]; then
+          export DESCRIPTION="$GITHUB_REF is merged into staging";
+          export STATE=0;
         else
-          DESCRIPTION=$merge_source_branch is not merged into $merge_destination_branch;
-          STATE=pending;
+          export DESCRIPTION="$GITHUB_REF is not merged into staging";
+          export STATE=100;
         fi
-        curl --request POST \
-          --url https://api.github.com/repos/${{ github.repository }}/statuses/$GITHUB_SHA \
-          --header "authorization: Bearer $GITHUB_TOKEN" \
-          --header 'content-type: application/json' \
-          --data "{\"state\":\"$STATE\",\"description\":\"$DESCRIPTION\",\"context\":\"checks.staging_merge\"}"
+        echo $DESCRIPTION
+        exit $STATE
