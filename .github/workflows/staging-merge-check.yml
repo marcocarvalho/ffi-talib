@@ -17,6 +17,8 @@ jobs:
         merge_destination_branch=staging
         merge_source_branch=$(git rev-parse --abbrev-ref $GITHUB_SHA)
         export
+        echo $(pwd)
+        ls -la
         echo ... git rev-parse --abbrev-ref $GITHUB_SHA ...
         echo ... git merge-base $merge_destination_branch $merge_source_branch ...
         merge_base=$(git merge-base $merge_destination_branch $merge_source_branch)
