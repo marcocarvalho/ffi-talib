@@ -11,4 +11,4 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - uses: actions/check_if_merged@v1
+    - uses: marcocarvalho/check_if_merged@v1
