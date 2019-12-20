@@ -1,9 +1,8 @@
-name: Staging Merge
+name: Check if branch is merged to staging
 on:
   push:
     branches-ignore:
       - 'master'
-
 jobs:
   build:
 
