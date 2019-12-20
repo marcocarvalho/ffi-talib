@@ -14,8 +14,9 @@ jobs:
     - name: Check staging merge
       run: |
         cd ${GITHUB_WORKSPACE}
-        echo ... git merge-base refs/heads/staging $GITHUB_REF ...
-        MERGE_BASE=$(git merge-base refs/heads/staging $GITHUB_REF)
+        git checkout staging
+        echo ... git merge-base staging $GITHUB_REF ...
+        MERGE_BASE=$(git merge-base staging $GITHUB_REF)
         if [[ $MERGE_BASE = $GITHUB_SHA ]]; then
           DESCRIPTION=$GITHUB_REF is merged into staging;
           STATE=success;
