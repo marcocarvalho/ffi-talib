@@ -1,5 +1,7 @@
 name: "Merge to staging if requested by code review comment"
-on: pull_request_review_comment
+on:
+  issue_comment:
+    types: [created, edited]
 
 jobs:
   build:
@@ -7,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: logging
+      run: echo "$GITHUB_REF"
     - uses: actions/checkout@v1
       # if: github.event.comment.body == 'merge to staging'
     - name: Merge to staging
