@@ -10,10 +10,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-      if: github.event.comment.body == 'merge to staging'
+      # if: github.event.comment.body == 'merge to staging'
     - name: Merge to staging
       uses: CareMessagePlatform/merge-branch@v1.1.0
-      if: github.event.comment.body == 'merge to staging'
+      # if: github.event.comment.body == 'merge to staging'
       with:
         type: 'now'
         target_branch: 'staging'
